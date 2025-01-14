@@ -27,6 +27,8 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext:
+            {{- toYaml .Values.nuiContainerSecurityContext | nindent 12 }}
           ports:
             - name: http
               containerPort: 31311
