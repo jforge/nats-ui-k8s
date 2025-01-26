@@ -41,6 +41,11 @@ ingress:
 
 resources: {}
 
+persistence:
+  storageClass: ""
+  size: ""
+  annotations: {}
+
 credsVolume:
   name: secret-creds-volume # Name of the Kubernetes Secret
 
@@ -49,7 +54,6 @@ credsVolume:
   items:
     - key: creds1
       path: creds1.creds
-
 
 nodeSelector: {}
 
