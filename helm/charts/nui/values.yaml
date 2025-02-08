@@ -3,7 +3,7 @@ fullnameOverride: ""
 
 image:
   repository: ghcr.io/nats-nui/nui
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 replicaCount: 1
@@ -46,6 +46,7 @@ persistence:
   size: ""
   annotations: {}
 
+# Credentials files 
 credsVolume:
   name: secret-creds-volume # Name of the Kubernetes Secret
 
@@ -54,6 +55,17 @@ credsVolume:
   items:
     - key: creds1
       path: creds1.creds
+
+# CLI contexts
+autoloadContexts: true
+contextsVolume:
+  name: secret-cli-contexts-volume # Name of the Kubernetes Secret
+
+  # Add more files as needed. All the creds added are mapped into the /cli-contexts of the container
+  # and they will be loaded at the container start if the autoLoadContexts is set to true
+  items:
+    - key: context1
+      path: context1.json
 
 nodeSelector: {}
 

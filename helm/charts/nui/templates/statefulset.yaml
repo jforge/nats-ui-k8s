@@ -45,11 +45,19 @@ spec:
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          args:
+            {{- if .Values.autoloadContexts }}
+            - "--nats-cli-contexts=/cli-contexts"
+            {{- end }}
           volumeMounts:
             - name: db-volume
               mountPath: /db
             - name: creds-volume
               mountPath: /creds
+              readOnly: true
+            - name: cli-contexts
+              mountPath: /cli-contexts
+              readOnly: true
       volumes:
         - name: creds-volume
           secret:
@@ -59,7 +67,16 @@ spec:
             {{- range .Values.credsVolume.items }}
               - key: {{ .key }}
                 path: {{ .path }}
-      {{- end }}
+            {{- end }}
+        - name: cli-contexts
+          secret:
+            optional: true
+            secretName: {{ .Values.contextsVolume.name }}
+            items:
+              {{- range .Values.contextsVolume.items }}
+              - key: {{ .key }}
+                path: {{ .path }}
+              {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

@@ -15,3 +15,48 @@ helm install nats-nui nats-nui/nui
 
 ## Customization
 Check `values.yaml` to enable ingress and customize the install
+
+### cli context secrets
+
+To autoload CLI contexts into your NUI deployment, you can create a Kubernetes Secret containing the context files. Here is an example of how to create a Secret with a NATS CLI context:
+
+1. Create a JSON file with the NATS CLI context:
+
+    ```json
+    {
+      "name": "demo",
+      "url": "nats://demo.nats.io:4222"
+    }
+    ```
+
+2. Create a Kubernetes Secret using the JSON file:
+
+    ```yaml
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: secret-cli-contexts-volume
+    type: Opaque
+    stringData:
+      context1.json: |
+        {
+          "name": "demo",
+          "url": "nats://demo.nats.io:4222"
+        }
+    ```
+
+3. Update your `values.yaml` to reference the new Secret:
+
+    ```yaml
+    autoloadContexts: true
+    contextsVolume:
+      name: secret-cli-contexts-volume # Name of the Kubernetes Secret
+
+      # Add more files as needed. All the creds added are mapped into the /cli-contexts of the container
+      # and they will be loaded at the container start if the autoLoadContexts is set to true
+      items:
+        - key: context1
+          path: context1.json
+    ```
+
+This setup will ensure that the NATS CLI context pointing to `demo.nats.io` is loaded into your container automatically.
