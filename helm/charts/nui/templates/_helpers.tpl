@@ -60,3 +60,9 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{- define "nui-k8s.imagePullSecrets" -}}
+{{- range $index, $item := .Values.image.imagePullSecrets }}
+  - name: {{ $item }}
+{{- end }}
+{{- end }}

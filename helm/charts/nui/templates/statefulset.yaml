@@ -23,6 +23,7 @@ spec:
     spec:
       serviceAccountName: {{ include "nui-k8s.serviceAccountName" . }}
       automountServiceAccountToken: false
+      imagePullSecrets: {{ (include "nui-k8s.imagePullSecrets" .) | indent 6 }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
