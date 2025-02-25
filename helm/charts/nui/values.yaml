@@ -10,6 +10,9 @@ image:
 replicaCount: 1
 nuiContainerSecurityContext: {}
 
+# Overrides the container command
+command: []
+
 podAnnotations: {}
 podLabels: {}
 podSecurityContext: {}
