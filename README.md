@@ -55,7 +55,7 @@ To autoload CLI contexts into your NUI deployment, you can create a Kubernetes S
       # Add more files as needed. All the creds added are mapped into the /cli-contexts of the container
       # and they will be loaded at the container start if the autoLoadContexts is set to true
       items:
-        - key: context1
+        - key: context1.json
           path: context1.json
     ```
 
